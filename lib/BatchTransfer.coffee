@@ -7,13 +7,14 @@ class BatchImporterTransfer extends Object
     @err = null
     @rows = 0
     @queueItemsCount = 0
-    @queue = async.queue((@sql, callback)=>
+    @queue = async.queue((sql, callback)=>
       @printProgress()
-      @destinationConnection.query @sql, null, (err,res)=>
+      @destinationConnection.query(sql, null, (err,res)=>
 #        console.log('..',@sql,res)
         @err = err if err
         callback()
-    , 5)
+      )
+    , 1)
 
   start:->
     @sourceConnection.query @sql, ((row) =>
@@ -23,7 +24,7 @@ class BatchImporterTransfer extends Object
       @printProgress()
       return @callback(err) if err
       if data.length > 0
-        @queue.push @destinationConnection.createSQL(columns, data, @destinationTable)
+        @queue.push(@destinationConnection.createSQL(columns, data, @destinationTable))
         @queueItemsCount++
       if last
         end = =>
