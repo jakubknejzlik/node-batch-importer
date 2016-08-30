@@ -17,7 +17,7 @@ class BatchImporterTransfer extends Object
 #        console.log('..',@sql,res)
         if err and (not sql.retryCount or sql.retryCount < SQL_RERTY_COUNT)
           sql.retryCount = (sql.retryCount or 0) + 1
-          console.log('error:',err.message,'retrying:',sql.re)
+          console.log('error:',err.message,'retrying:',sql.retryCount)
           @queue.push(sql)
         else
           @err = err if err
