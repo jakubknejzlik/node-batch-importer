@@ -15,8 +15,9 @@ class BatchImporterTransfer extends Object
       @printProgress()
       @destinationConnection.query(sql.query, null, (err,res)=>
 #        console.log('..',@sql,res)
-        if not sql.retryCount or sql.retryCount < SQL_RERTY_COUNT
+        if err and (not sql.retryCount or sql.retryCount < SQL_RERTY_COUNT)
           sql.retryCount = (sql.retryCount or 0) + 1
+          console.log('error:',err.message,'retrying:',sql.re)
           @queue.push(sql)
         else
           @err = err if err
