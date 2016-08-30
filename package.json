@@ -1,0 +1,26 @@
+{
+  "name": "batch-importer",
+  "description": "Database Batch Importer",
+  "version": "0.5.5",
+  "license": "MIT",
+  "dependencies": {
+    "async": "^1.5.0",
+    "generic-pool": "^2.2.1",
+    "mysql": "x",
+    "tedious": "1.5.1"
+  },
+  "scripts": {
+    "pretest":"npm run cleanup;npm run start-docker;npm run create-databases",
+    "start-docker":"docker run -p 30051:3306 --name batchimporter-mariadb -e MYSQL_ROOT_PASSWORD=batchimporter -d mariadb",
+    "create-databases":"docker exec batchimporter-mariadb mysql -pbatchimporter -e \"CREATE DATABASE test;CREATE database test2\"",
+    "test":"mocha test || npm run cleanup",
+    "cleanup":"docker rm -f batchimporter-mariadb"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jakubknejzlik/node-batch-importer.git"
+  },
+  "devDependencies": {
+    "mocha": "^3.0.2"
+  }
+}
