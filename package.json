@@ -10,11 +10,7 @@
     "tedious": "1.5.1"
   },
   "scripts": {
-    "pretest":"npm run cleanup;npm run start-docker;npm run create-databases",
-    "start-docker":"docker run -p 30051:3306 --name batchimporter-mariadb -e MYSQL_ROOT_PASSWORD=batchimporter -d mariadb",
-    "create-databases":"docker exec batchimporter-mariadb mysql -pbatchimporter -e \"CREATE DATABASE test;CREATE database test2\"",
-    "test":"mocha test || npm run cleanup",
-    "cleanup":"docker rm -f batchimporter-mariadb"
+    "test":"mocha test"
   },
   "repository": {
     "type": "git",
